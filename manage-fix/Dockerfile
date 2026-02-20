@@ -8,11 +8,11 @@ WORKDIR /app
 RUN npm install evolution-manager@0.4.13 fs-extra
 
 # Avisa o Railway qual porta vamos usar
-EXPOSE 8080
+EXPOSE 9615
 
 # Força as variáveis de ambiente corretas
 ENV HOST=0.0.0.0
-ENV PORT=8080
+ENV PORT=9615
 ENV NODE_ENV=production
 
 # Comando para rodar a aplicação
