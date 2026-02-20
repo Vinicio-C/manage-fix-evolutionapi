@@ -1,0 +1,11 @@
+{
+  "name": "evolution-manager-fix",
+  "version": "1.0.0",
+  "scripts": {
+    "start": "evolution-manager"
+  },
+  "dependencies": {
+    "evolution-manager": "0.4.13",
+    "fs-extra": "^11.2.0"
+  }
+}
