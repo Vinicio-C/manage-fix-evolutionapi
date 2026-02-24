@@ -25,6 +25,5 @@ COPY --from=builder /app/dist ./dist
 
 EXPOSE 9615
 
-ENV PORT=9615
-
-CMD ["serve", "-s", "dist", "-l", "9615"]
+# Railway injeta $PORT dinamicamente — o serve precisa ouvir nessa porta
+CMD ["sh", "-c", "serve -s dist -l ${PORT:-9615}"]
