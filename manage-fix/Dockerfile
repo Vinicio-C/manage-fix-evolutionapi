@@ -7,7 +7,7 @@ WORKDIR /app
 RUN npm install evolution-manager@0.4.13 fs-extra
 
 # Instala as devDependencies do evolution-manager (necessário para o build do Vite no startup)
-RUN cd node_modules/evolution-manager && npm install --include=dev
+RUN cd node_modules/evolution-manager && npm install --include=dev --legacy-peer-deps
 
 EXPOSE 9615
 
