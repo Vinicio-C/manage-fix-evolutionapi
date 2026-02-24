@@ -20,7 +20,7 @@ FROM node:22-slim
 WORKDIR /app
 
 # Express para servir os arquivos estáticos — sem CLI intermediária
-RUN npm install express
+RUN npm install express@4
 
 COPY --from=builder /app/dist ./dist
 
