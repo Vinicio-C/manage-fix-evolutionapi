@@ -1,18 +1,17 @@
-# Usa a versão exata do Node que precisamos
-FROM node:22-alpine
+# node:22-slim (Debian) evita o problema de PATH do Alpine com npm em subprocessos
+FROM node:22-slim
 
-# Cria a pasta de trabalho
 WORKDIR /app
 
-# Instala o painel e a dependência fujona juntos
+# Instala o painel e a dependência auxiliar
 RUN npm install evolution-manager@0.4.13 fs-extra
 
-# Avisa o Railway qual porta vamos usar
+# Instala as devDependencies do evolution-manager (necessário para o build do Vite no startup)
+RUN cd node_modules/evolution-manager && npm install --include=dev
+
 EXPOSE 9615
 
-# Variáveis de ambiente
 ENV NODE_ENV=production
 ENV PORT=9615
 
-# Comando correto para iniciar o servidor
 CMD ["npx", "evolution-manager", "server", "start"]
