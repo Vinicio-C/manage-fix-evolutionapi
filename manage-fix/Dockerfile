@@ -10,10 +10,9 @@ RUN npm install evolution-manager@0.4.13 fs-extra
 # Avisa o Railway qual porta vamos usar
 EXPOSE 9615
 
-# Força as variáveis de ambiente corretas
-ENV HOST=0.0.0.0
-ENV PORT=9615
+# Variáveis de ambiente
 ENV NODE_ENV=production
+ENV PORT=9615
 
-# Comando para rodar a aplicação
-CMD ["npx", "evolution-manager"]
+# Comando correto para iniciar o servidor
+CMD ["npx", "evolution-manager", "server", "start"]
