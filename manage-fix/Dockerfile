@@ -23,9 +23,18 @@ WORKDIR /app
 RUN npm install express
 
 COPY --from=builder /app/dist ./dist
-COPY server.js .
+
+# Gera server.js inline: evita dependência do build context do Railway
+RUN printf '%s\n' \
+    "const express = require('express');" \
+    "const path = require('path');" \
+    "const app = express();" \
+    "const PORT = process.env.PORT || 3000;" \
+    "app.use(express.static(path.join(__dirname, 'dist')));" \
+    "app.get('*', (req, res) => res.sendFile(path.join(__dirname, 'dist', 'index.html')));" \
+    "app.listen(PORT, '0.0.0.0', () => console.log('Rodando na porta ' + PORT));" \
+    > server.js
 
 EXPOSE 3000
 
-# Node.js puro: lê PORT do Railway e faz listen em 0.0.0.0 explicitamente
 CMD ["node", "server.js"]
