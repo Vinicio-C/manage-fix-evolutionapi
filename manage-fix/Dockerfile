@@ -19,11 +19,15 @@ RUN npm run build
 FROM node:22-slim
 WORKDIR /app
 
+# Mesmo symlink do builder: serve é um script Node que usa /usr/bin/env node
+RUN ln -s /usr/local/bin/node /usr/bin/node
+
 RUN npm install -g serve
 
 COPY --from=builder /app/dist ./dist
 
-EXPOSE 9615
+EXPOSE 3000
 
-# Railway injeta $PORT dinamicamente — o serve precisa ouvir nessa porta
-CMD ["sh", "-c", "serve -s dist -l ${PORT:-9615}"]
+# tcp://0.0.0.0 força binding em todas as interfaces (não só localhost)
+# Railway injeta $PORT dinamicamente
+CMD ["sh", "-c", "serve -s dist --listen tcp://0.0.0.0:${PORT:-3000}"]
