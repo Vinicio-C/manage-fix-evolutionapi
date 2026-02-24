@@ -7,8 +7,8 @@ WORKDIR /app
 RUN apt-get update && apt-get install -y git ca-certificates --no-install-recommends \
     && rm -rf /var/lib/apt/lists/*
 
-RUN git clone --depth 1 --branch 0.4.13 \
-    https://github.com/gabrielpastori1/evolution-manager.git .
+RUN git clone --depth 1 \
+    https://github.com/EvolutionAPI/evolution-manager.git .
 
 # npm ci usa o package-lock.json exato do repo
 RUN npm ci --legacy-peer-deps
