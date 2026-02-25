@@ -12,16 +12,15 @@ FROM node:22-slim
 WORKDIR /app
 RUN npm install express@4
 COPY --from=builder /app/dist ./dist
-RUN printf '%%s\n' \
-    "const express = require('express');" \
-    "const path = require('path');" \
-    "const app = express();" \
-    "const PORT = process.env.PORT || 8080;" \
-    "app.use(express.static(path.join(__dirname, 'dist')));" \
-    "app.get('*', (req, res) => res.sendFile(path.join(__dirname, 'dist', 'index.html')));" \
-    "app.listen(PORT, '0.0.0.0', () => console.log('Rodando na porta ' + PORT));" \
-    > server.js
+
+# Criando o server.js linha por linha à prova de falhas
+RUN echo "const express = require('express');" > server.js && \
+    echo "const path = require('path');" >> server.js && \
+    echo "const app = express();" >> server.js && \
+    echo "const PORT = process.env.PORT || 8080;" >> server.js && \
+    echo "app.use(express.static(path.join(__dirname, 'dist')));" >> server.js && \
+    echo "app.get('*', (req, res) => res.sendFile(path.join(__dirname, 'dist', 'index.html')));" >> server.js && \
+    echo "app.listen(PORT, '0.0.0.0', () => console.log('Rodando na porta ' + PORT));" >> server.js
+
 EXPOSE 8080
 CMD ["node", "server.js"]
-
-#aa
