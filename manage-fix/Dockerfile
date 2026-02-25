@@ -3,8 +3,11 @@ FROM node:22-slim AS builder
 WORKDIR /app
 RUN apt-get update && apt-get install -y git ca-certificates --no-install-recommends \
     && rm -rf /var/lib/apt/lists/*
-RUN git clone --depth 1 https://github.com/EvolutionAPI/evolution-manager.git .
-RUN npm ci --legacy-peer-deps
+
+# A MÁGICA ESTÁ AQUI: Puxando o repositório novo v2
+RUN git clone --depth 1 https://github.com/EvolutionAPI/evolution-manager-v2.git .
+
+RUN npm install
 RUN npm run build
 
 # Stage 2: Runtime
@@ -13,7 +16,7 @@ WORKDIR /app
 RUN npm install express@4
 COPY --from=builder /app/dist ./dist
 
-# Criando o server.js linha por linha à prova de falhas
+# Criando o server.js blindado
 RUN echo "const express = require('express');" > server.js && \
     echo "const path = require('path');" >> server.js && \
     echo "const app = express();" >> server.js && \
